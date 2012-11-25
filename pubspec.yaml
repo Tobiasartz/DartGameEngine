@@ -1,0 +1,9 @@
+name:  DartGameEngine
+description:  Game engine for 2D + Physics games
+
+#dependencies:
+#  unittest: { sdk: unittest }
+dependencies:
+  js:
+    hosted: js
+  box2d: 0.0.4

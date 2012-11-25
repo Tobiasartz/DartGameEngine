@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GameEngine</title>
+    <link rel="stylesheet" href="DartGameEngine.css">
+    <script src="lib/three.js"></script>
+    <script src="lib/stats.min.js"></script>
+  </head>
+  <body>
+    <div id="debugDraw"></div>
+    <div id="container"></div>
+    <script type="application/dart" src="web/DartGameEngine.dart"></script>
+    
+    <script>    
+      stats = new Stats();
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.top = '0px';
+      document.body.appendChild( stats.domElement );      
+    </script>
+  </body>
+</html>
