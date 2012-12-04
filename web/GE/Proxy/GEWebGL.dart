@@ -1,17 +1,21 @@
 part of GE;
 
 class GEWebGL {
-  GEWebGLProxy webGLProxy;
+  static GEWebGLProxyThreeDart webGLProxy;
   Element container;
   
   static List<GEGraphic> updateables = new List();
-  static List<js.Proxy> clickables = new List();
+  static List<THREE.Mesh> clickables = new List();
+  static THREE.Vector3 mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
+  static THREE.Vector3 mouse3D = new THREE.Vector3();
+  static GEGraphic followGraphic; 
+  
   
   GEWebGL(String containerName, String library){
     switch(library.toLowerCase()){      
       case 'three.js':
       default:
-        this.webGLProxy = new GEWebGLProxyThreejs(800, 800);
+        GEWebGL.webGLProxy = new GEWebGLProxyThreeDart(SETTINGS.canvasWidth, SETTINGS.canvasHeight);
         break;
     }
     
@@ -19,14 +23,12 @@ class GEWebGL {
   }
   
   void init() {
-    this.webGLProxy.init();
-    js.scoped((){
-      this.container.elements.add(this.webGLProxy.renderer.domElement);
-    });    
+    GEWebGL.webGLProxy.init();
+    this.container.elements.add(GEWebGL.webGLProxy.renderer.domElement);
    }
   
   void addToScene(GEGraphic graphic, bool needsUpdate, bool clickable){
-    this.webGLProxy.addToScene(graphic);
+    GEWebGL.webGLProxy.addToScene(graphic);
     
     if(needsUpdate)
       GEWebGL.addUpdateable(graphic);
@@ -36,13 +38,32 @@ class GEWebGL {
   }
   
   void detectHit(num x, num y) {
-   this.webGLProxy.detectHit(x, y);
+   GEWebGL.mouse2D.x = ( x / GEWebGL.webGLProxy.canvasWidth ) * 2 - 1;
+   GEWebGL.mouse2D.y = - ( y / GEWebGL.webGLProxy.canvasHeight ) * 2 + 1;
+   
+   GEWebGL.mouse3D.x = ( x / GEWebGL.webGLProxy.canvasWidth ) * 2 - 1;
+   GEWebGL.mouse3D.y = - ( y / GEWebGL.webGLProxy.canvasHeight ) * 2 + 1;
+   GEWebGL.mouse3D.z = 0.5;
+   
+   GEWebGL.webGLProxy.detectHit();
   }
   
-  void onUpdate(){
-    js.scoped((){
-      this.webGLProxy.render();
-    });
+  static remove(GEGraphic graphic){
+    GEWebGL.removeClickable(graphic);
+    GEWebGL.removeUpdateable(graphic);
+    GEWebGL.webGLProxy.removeFromScene(graphic);
+  }
+  
+  void onUpdate(num time){
+    GEWebGL.webGLProxy.render();
+    
+    if(GEWebGL.followGraphic != null){
+      GEWebGL.webGLProxy.camera.position.copy(GEWebGL.followGraphic.mesh.position);
+    }
+    
+    for(GEObject object in GEWebGL.updateables){
+      object.onUpdate(time);
+    }
   }
   
   

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GEFrame</title>
+    <link rel="stylesheet" href="GEFrame.css">
+  </head>
+  <body>
+    <div id="debugDraw"></div>
+    <div id="container">
+      <div id="center"></div>
+    </div>
+
+    <script type="application/dart" src="web/DartGameEngine.dart"></script>
+    <script src="https://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>
+    <script>
+    function getOuterJSON(){
+    return window.parent.document.getElementById('output').value;
+    }
+    </script>
+  </body>
+</html>

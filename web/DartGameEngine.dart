@@ -1,14 +1,20 @@
 library GE;
 
 import 'dart:html';
+import 'dart:json';
 import 'package:js/js.dart' as js;
 import 'dart:math';
 import 'package:box2d/box2d_browser.dart' as Box2D;
+import 'package:three/three.dart' as THREE;
+import 'package:three/extras/image_utils.dart' as THREEImageUtils;
+
+part 'GE/Globals/Settings.dart';
+part 'GE/Globals/Instruction.dart';
 
 part 'GE/Proxy/GEBox2D.dart';
 part 'GE/Proxy/GEWebGL.dart';
 part 'GE/Proxy/GEWebGLProxy.dart';
-part 'GE/Proxy/GEWebGLProxyThreejs.dart';
+part 'GE/Proxy/GEWebGLProxyThreeDart.dart';
 
 part 'GE/Base/GEObject.dart';
 part 'GE/Base/GEGraphic.dart';
@@ -16,88 +22,90 @@ part 'GE/Base/GEHitObject.dart';
 part 'GE/Base/GEPhysicObject.dart';
 
 part 'GE/GameObjects/GEObstacle.dart';
+part 'GE/GameObjects/GEPlayer.dart';
+part 'GE/GameObjects/GEBullet.dart';
+part 'GE/GameObjects/GEDestroyable.dart';
+part 'GE/GameObjects/GEEnemy.dart';
 
-GEWebGL webGL;
-GEBox2D box2D;
+GEWebGL WEBGL;
+GEBox2D BOX2D;
+GEPlayer PLAYER;
+List<GEObject> EXPIREABLES = new List();
 
-num lastFrameTime = 0;
-num frameRate = 0;
+List<int> KEYSDOWN = new List();
+
+num LASTFRAME = 0;
+num FRAMERATE = 0;
+
+Settings SETTINGS;
 
 void main() {
+  SETTINGS = new Settings();
+  SETTINGS.canvasWidth = 800;
+  SETTINGS.canvasHeight = 800;
   initGame();
 }
 
 void initGame() {
   initPhysics();
   
-  webGL = new GEWebGL('#container','three.js');
-  webGL.init();
-
+  WEBGL = new GEWebGL('#container','three.js');
+  WEBGL.init();
   
-  for(var i = 0; i < 10; i++){
-    GEHitObject graphic = new GEHitObject('Hit object');
-    graphic.setAsRectangle(100, 100, 100);
-    graphic.setPosition(-500 + (i* 110), 750, 1);
-    graphic.attachPhysics();
-    webGL.addToScene(graphic, true, false);
-  }
-
-  /*
-  GEObstacle wall = new GEObstacle('Bottom wall');
-  wall.setAsRectangle(1500, 1, 5);
-  wall.setPosition(1, -750, 0);
-  wall.attachPhysics();
-  webGL.addToScene(wall, false, false);
-  */
+  Instruction instruction = new Instruction('/Projects/Dart/DartGameEngine/instructions.html');  
+  instruction.onComplete = function(){
+    initListeners();
+    window.requestAnimationFrame(update);
+  };
   
-  /*
-  GEObstacle wall2 = new GEObstacle('Left wall');
-  wall2.setAsRectangle(1, 1000, 5);
-  wall2.setPosition(-750, -10, 0);
-  wall2.attachPhysics();
-  webGL.addToScene(wall2, false, false);
-  
-  
-  GEObstacle wall3 = new GEObstacle('Left wall');
-  wall3.setAsRectangle(1, 1000, 5);
-  wall3.setPosition(750, -10, 0);
-  wall3.attachPhysics();
-  webGL.addToScene(wall3, false, false);
-  */
-  initListeners();
-  
-  window.requestAnimationFrame(update);
+  instruction.init();
 }
 
 void initPhysics() {
-  box2D = new GEBox2D();
-  box2D.init();
- // box2D.activateDebug(query('#debugDraw'));
+  BOX2D = new GEBox2D();
+  BOX2D.init();
+  BOX2D.activateDebug(query('#debugDraw'));
 }
 
 void initListeners() {
   window.on.click.add(onWindowClick, true);
+  window.on.keyDown.add(onKeyDown, true);
+  window.on.keyUp.add(onKeyUp, true);
 }
 
 void update(num time){
   window.requestAnimationFrame(update);
   
-  /*
-  js.scoped((){
-    js.context.stats.update();
-  });
-  */
+  BOX2D.onUpdate();
+  WEBGL.onUpdate(time);
   
-  box2D.onUpdate();
-  webGL.onUpdate();
+  for(GEObject object in EXPIREABLES){
+    if(object.ttl < time){
+      object.expire();      
+    }
+  }
   
-  frameRate = 1 / (time - lastFrameTime);
-  lastFrameTime = time;
-  
+  FRAMERATE = 1 / (time - LASTFRAME);
+  LASTFRAME = time;  
 }
 
 void onWindowClick(MouseEvent e) {
   e.stopPropagation();
   print('Click event: x:${e.clientX} y:${e.clientY}'); 
-  webGL.detectHit(e.clientX, e.clientY);
+  WEBGL.detectHit(e.clientX, e.clientY);
+}
+
+void onKeyDown(KeyboardEvent e) {
+  e.stopPropagation();
+  if(KEYSDOWN.indexOf(e.keyCode) == -1){
+    KEYSDOWN.add(e.keyCode);
+  }
+}
+
+void onKeyUp(KeyboardEvent e) {
+ e.stopPropagation();
+ int index = KEYSDOWN.indexOf(e.keyCode);
+ if(index > -1) {
+   KEYSDOWN.removeAt(index);
+ }
 }

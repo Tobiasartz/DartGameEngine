@@ -1,29 +1,86 @@
-
+@CHARSET "UTF-8";
 body {
-  background-color: #F8F8F8;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.2em;
   margin: 0;
+  padding: 0;
 }
 
-p {
-  color: #333;
+div {
+  display:block;
 }
 
-#debugDraw,
-#container {
+.hidden {
+  display:none;
+}
+
+.mainMenu {
+  background-color: #222;
+  height: 30px;
+}
+
+.menu,
+.menu li{
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  display:block;
+  min-width: 100px;
+  background-color: gray;
+  color: white;
+  border-style:solid;
+  border-width: 1px;
+  border-color: #000;
+  margin-right: 5px;
+  float:left;
+  padding: 5px;
+  text-align:center;
+}
+
+.game{
+  overflow:hidden;
+  background-color: #333;
+}
+
+.visualEditor {
+  background-color: #555;
+}
+.game,
+.visualEditor {
+  float: left;
   width: 800px;
   height: 800px;
-  position: absolute;
-  border: 1px solid #ccc;
+  position:relative;
+}
+
+.output {
+  width: 90%;
+  height: 100px;
+}
+
+
+
+.GEGraphic {
+  width:30px;
+  height:30px;
+  position:absolute;
+  background-color:#999;
   top:0px;
   left:0px;
 }
 
-#text {
-  font-size: 24pt;
-  text-align: center;
-  margin-top: 140px;
+.obstacle {
+  background-color:yellow;
+}
+
+.enemy {
+  background-color: red;
+}
+
+.destroyable {
+  background-color: green;
+}
+
+.player {
+  background-color: purple;
 }

@@ -2,7 +2,6 @@ part of GE;
 
 class GEWebGLProxy {
   String name;
-  js.Proxy renderer;
   num canvasWidth;
   num canvasHeight;
   
@@ -16,7 +15,11 @@ class GEWebGLProxy {
     // Extend
   }
   
-  void detectHit(num x, num y) {
+  void removeFromScene(GEGraphic graphic){
+    // Extendd
+  }
+  
+  void detectHit() {
     // Extend
   }
   
