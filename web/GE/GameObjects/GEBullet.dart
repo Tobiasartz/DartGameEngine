@@ -1,6 +1,6 @@
 part of GE;
 
-class GEBullet extends GEGraphic{
+class GEBullet extends GEDynamicObject{
   num ttlAddon = 500;
   String direction;
   bool isAlive;

@@ -1,6 +1,6 @@
 part of GE;
 
-class GEDestroyable extends GEGraphic{
+class GEDestroyable extends GEDynamicObject{
   num life = 50;
   bool isAlive;
   

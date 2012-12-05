@@ -17,8 +17,11 @@ part 'GE/Proxy/GEWebGLProxy.dart';
 part 'GE/Proxy/GEWebGLProxyThreeDart.dart';
 
 part 'GE/Base/GEObject.dart';
-part 'GE/Base/GEGraphic.dart';
-part 'GE/Base/GEHitObject.dart';
+part 'GE/Base/GEEventDispatcher.dart';
+part 'GE/Base/GEDisplayObject.dart';
+part 'GE/Base/GEStaticObject.dart';
+part 'GE/Base/GEDynamicObject.dart';
+
 part 'GE/Base/GEPhysicObject.dart';
 
 part 'GE/GameObjects/GEObstacle.dart';

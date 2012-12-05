@@ -15,7 +15,7 @@ class GEWebGLProxy {
     // Extend
   }
   
-  void removeFromScene(GEGraphic graphic){
+  void removeFromScene(GEDisplayObject graphic){
     // Extendd
   }
   

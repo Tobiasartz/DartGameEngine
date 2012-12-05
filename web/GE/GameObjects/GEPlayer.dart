@@ -1,6 +1,6 @@
 part of GE;
 
-class GEPlayer extends GEGraphic{
+class GEPlayer extends GEDynamicObject{
   String facing;
   num timeNextAction = 0;
   num timeActionInterval = 30;

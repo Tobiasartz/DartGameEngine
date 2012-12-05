@@ -4,11 +4,11 @@ class GEWebGL {
   static GEWebGLProxyThreeDart webGLProxy;
   Element container;
   
-  static List<GEGraphic> updateables = new List();
+  static List<GEDisplayObject> updateables = new List();
   static List<THREE.Mesh> clickables = new List();
   static THREE.Vector3 mouse2D = new THREE.Vector3( 0, 10000, 0.5 );
   static THREE.Vector3 mouse3D = new THREE.Vector3();
-  static GEGraphic followGraphic; 
+  static GEDisplayObject followGraphic; 
   
   
   GEWebGL(String containerName, String library){
@@ -27,7 +27,7 @@ class GEWebGL {
     this.container.elements.add(GEWebGL.webGLProxy.renderer.domElement);
    }
   
-  void addToScene(GEGraphic graphic, bool needsUpdate, bool clickable){
+  void addToScene(GEDisplayObject graphic, bool needsUpdate, bool clickable){
     GEWebGL.webGLProxy.addToScene(graphic);
     
     if(needsUpdate)
@@ -48,7 +48,7 @@ class GEWebGL {
    GEWebGL.webGLProxy.detectHit();
   }
   
-  static remove(GEGraphic graphic){
+  static remove(GEDisplayObject graphic){
     GEWebGL.removeClickable(graphic);
     GEWebGL.removeUpdateable(graphic);
     GEWebGL.webGLProxy.removeFromScene(graphic);
@@ -80,11 +80,11 @@ class GEWebGL {
     }
   }
   
-  static void addClickable(GEGraphic graphic){
+  static void addClickable(GEDisplayObject graphic){
     GEWebGL.clickables.add(graphic.mesh);
   }
   
-  static void removeClickable(GEGraphic graphic){
+  static void removeClickable(GEDisplayObject graphic){
     int index = GEWebGL.clickables.indexOf(graphic.mesh);
     
     if( index != -1){

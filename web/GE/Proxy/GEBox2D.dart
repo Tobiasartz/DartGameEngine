@@ -6,7 +6,7 @@ class GEBox2D {
   static int gravityX = 0;
   static int gravityY = -1;
   
-  static List<GEGraphic> expireds = new List();
+  static List<GEDisplayObject> expireds = new List();
   
   CanvasRenderingContext2D context;
   
@@ -49,7 +49,7 @@ class GEBox2D {
       world.drawDebugData();
     }
     
-    for(GEGraphic graphic in GEBox2D.expireds){
+    for(GEDisplayObject graphic in GEBox2D.expireds){
       GEBox2D.world.destroyBody(graphic.physicsObject.body);
       GEBox2D.expireds.removeAt(GEBox2D.expireds.indexOf(graphic));
     }

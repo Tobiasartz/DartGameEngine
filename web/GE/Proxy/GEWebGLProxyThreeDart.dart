@@ -24,11 +24,11 @@ class GEWebGLProxyThreeDart extends GEWebGLProxy{
       this.renderer.setSize( this.canvasWidth, this.canvasHeight );
   }
   
-  void addToScene(GEGraphic graphic){
+  void addToScene(GEDisplayObject graphic){
       this.scene.add(graphic.mesh);
   }
   
-  void removeFromScene(GEGraphic graphic){
+  void removeFromScene(GEDisplayObject graphic){
       this.scene.remove(graphic.mesh);
   }
   

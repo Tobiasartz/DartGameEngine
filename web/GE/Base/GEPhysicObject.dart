@@ -6,7 +6,7 @@ class GEPhysicObject{
   Box2D.FixtureDef fixtureDef;
   
   String type = '';
-  GEGraphic parent;
+  GEDisplayObject parent;
   
   Function _onHitCallback;
   Function _onHitEndCallback;

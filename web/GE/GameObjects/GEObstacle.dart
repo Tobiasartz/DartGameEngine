@@ -1,6 +1,6 @@
 part of GE;
 
-class GEObstacle extends GEGraphic{
+class GEObstacle extends GEStaticObject{
   GEObstacle(String name) : super(name);
   
   void attachPhysics(){
